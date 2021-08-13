@@ -1,2 +1,2 @@
 # FinancialProgram
- Portuguese Progam to a local company, still in progrees
+ Portuguese Program to a local company, still in progrees
