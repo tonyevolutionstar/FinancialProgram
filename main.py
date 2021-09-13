@@ -36,8 +36,8 @@ def add_provider(name, nif, email, phone):
     provider = Provider(name, nif, email, phone)
 
 
-def add_info_into_file(tipo, info):
-    return Database(tipo, info)
+def add_info_into_file(tp, mem):
+    return Database(tp, mem)
 
 
 # principal menu, input opcao output submenu
@@ -64,7 +64,6 @@ def sub_menu():
     print("\t\t3 - Remover")
     print("\t\t4 - Listar")
     print("-------- Adicionar Opcao ------------\n")
-
     return int(input())
 
 
@@ -83,37 +82,35 @@ def confirm_menu(selection, tipo):
 
     return int(input())
 
+
 def info():
-    print("Adicione o nome")
-    nome = str(input())
-    print("Adicione o nif")
-    nif = int(input())
-    print("Adicione o mail")
-    email = str(input())
-    print("Adicione o telefone")
-    tel = int(input())
+    nome = input("Adicione o nome")
+    nif = int(input("Adicione o nif"))
+    email = input("Adicione o mail")
+    tel = int(input("Adicione o telefone"))
 
     return nome, nif, email, tel
+
 
 def add_info_client():
     print("Estrutura Cliente nome, nif, email, telefone")
 
     nome, nif, email, tel = info()
     client = Client(nome, nif, email, tel)
-    op = confirm_menu(client.__dict__, "clientes")
+    op_client = confirm_menu(client.__dict__, "clientes")
 
-    if op == 1:
+    if op_client == 1:
         add_info_into_file("clientes", client.__dict__)
 
-    return op
+    return op_client
 
 
 def list_info_client():
-    your_path = 'dados/clientes/'
-    files = os.listdir(your_path)
+    path = 'dados/clientes/'
+    files = os.listdir(path)
 
     for file in files:
-        f = open(os.path.join(your_path, file), 'r')
+        f = open(os.path.join(path, file), 'r')
         print(f.read())
         # do what you want
         f.close()
@@ -124,12 +121,12 @@ def add_info_fornecedor():
     nome, nif, email, tel = info()
 
     forn = Provider(nome, nif, email, tel)
-    op = confirm_menu(forn.__dict__, "fornecedores")
+    op_fornecedor = confirm_menu(forn.__dict__, "fornecedores")
 
-    if op == 1:
+    if op_fornecedor == 1:
         add_info_into_file("fornecedores", forn.__dict__)
 
-    return op
+    return op_fornecedor
 
 
 def list_info_fornecedor():
@@ -142,20 +139,7 @@ def list_info_fornecedor():
         # do what you want
         f.close()
 
-def list_info_products():
-    path = 'dados/produtos/produtos.txt'
-    f = open(path,'r')
-    line = f.read().split(";")
-    product.add(line)
-    product.list()
-    f.close()
 
-def write_info_products(name_p):
-    path = 'dados/produtos/produtos.txt'
-    f = open(path, 'a')
-    f.write(";"+name_p)
-    f.close()
-    
 
 def add_info_buys():
     pass
@@ -163,8 +147,6 @@ def add_info_buys():
 
 def add_info_sells():
     pass
-
-
 
 
 # Press the green button in the gutter to run the script.
@@ -203,26 +185,22 @@ if __name__ == '__main__':
                 list_info_fornecedor()
                 sub_op = sub_menu()
         elif op == 5:  # product
-
             sub_op = sub_menu()
             if sub_op == 0:
                 princ = 0
             elif sub_op == 1:  # add name, nif, email, phone
-
                 while cancel == 0:
-                    print("Qual é o produto a adicionar?")
-                    name_p = input()
+                    name_p = input('Qual é o produto a adicionar?')
                     cancel = confirm_menu(name_p, "product")
                     product = Products()
                     product.add(name_p)
-                    write_info_products(name_p)
+
             elif sub_op == 2:
-                print("Qual é o produto a desejar?")
-                name_p = input()
+                name_p = input("Qual é o produto que quer alterar? ")
                 product.update(name_p)
             elif sub_op == 3:
-                print("Qual é o produto a eliminar?")
-                name_p = input()
+
+                name_p = str(input("Qual é o produto a eliminar?")).strip()
                 product.remove(name_p)
             elif sub_op == 4:
-                list_info_products()
+                product.list_products()
