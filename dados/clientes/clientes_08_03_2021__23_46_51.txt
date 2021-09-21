@@ -1,1 +1,0 @@
-{'name': 'Zeca', 'nif': 555000123, 'email': 'zeca@outlook.pt', 'phone': 961127703}
