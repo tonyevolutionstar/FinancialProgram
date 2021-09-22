@@ -2,16 +2,6 @@
 __author__ = "Antonio Ramos"
 
 
-products_list = []
-
-def error_message(name_p):
-    print('O nome ' + name_p + ' nao esta na base de dados\n')
-    print('Disponiveis: ')
-    for i in range(len(products_list)):
-        if products_list[i] is not None:
-            print(products_list[i])
-
-
 def verify_product(name_p):  # verify name in the list of products returns 1 if exists
     verify = 0
     for p in products_list:
@@ -19,12 +9,6 @@ def verify_product(name_p):  # verify name in the list of products returns 1 if 
             verify = 1
 
     return verify
-
-
-def write_info_products(name_p):
-    f = open(path_products, 'a')
-    f.write(";" + name_p)
-    f.close()
 
 
 def read_info_products():  # read all products from file
@@ -62,21 +46,6 @@ class Products:
         write_info_products(name_product)
         return 1
 
-    def update(self, name_product):
-        verify = verify_product(name_product)
-        if verify == 0:
-            error_message(name_product)
-            return 0
-        else:
-            pos = self.products_list.index(name_product)
-            self.products_list.pop(pos)
-            print("Qual é a nova designaçao?")
-            upd_product = input()
-            self.products_list.insert(pos, upd_product)
-            clean_trash()
-            for p in self.products_list:
-                write_info_products(p)
-            return 1
 
     def remove(self, name_product):
         if name_product not in self.products_list:

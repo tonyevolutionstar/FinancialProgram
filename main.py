@@ -40,6 +40,9 @@ def add_provider(name, nif, email, phone):
 def add_info_into_file(type_, info_):
     return Database(type_, info_)
 
+def success_message():
+    print("Dados gravados com sucesso\n")
+
 # principal menu, input option output submenu
 def menu():
     print("--------------------------------------")
@@ -263,13 +266,19 @@ def error_message(products_list, name_p):
 
 
 def write_info_product(info_product):
-    list_product = list_products()
     file = open(path_products, 'w', encoding='utf8')
-    for l_p in list_product:
+    for l_p in list_products():
         file.write(l_p + ",")
     file.write(info_product)
-    print("Dados gravados com sucesso")
+    success_message()
     file.close()
+
+def write_info_product_update(info_product):
+    file = open(path_products, 'w', encoding='utf8')
+    file.write(info_product)
+    success_message()
+    file.close()
+
 
 def add_info_product():
     print("Qual é o produto a adicionar?")
@@ -277,6 +286,20 @@ def add_info_product():
     op_product = confirm_menu(new_product, "product")
 
     return op_product, new_product
+
+def verify_product(name_product):  # verify name in the list of products returns 1 if exists
+    verify = 0
+    for product in list_products():
+        if product == name_product:
+            verify = 1
+
+    return verify, list_products()
+
+def clean_trash():  # after remove or update one product we got to clean the file and write the products
+    f = open(path_products, 'w')
+    f.write("")
+    f.close()
+
 
 def add_info_buys():
     pass
@@ -330,22 +353,48 @@ if __name__ == '__main__':
             sub_op2 = sub_menu2()
         elif op == 5:  # product
             sub_op = sub_menu()
-
             if sub_op == 0:
                 princ = 0
-            elif sub_op == 1:  # add name, nif, email, phone
+            elif sub_op == 1:   # Designação
                 stop, new_p = add_info_product()
                 if stop == 0:
                     sub_op = 0
                 else:
                     write_info_product(new_p)
-            elif sub_op == 2:
+            elif sub_op == 2:  # update
                 print("Qual é o produto que quer alterar?")
                 name_p = input()
-            elif sub_op == 3:
+                stop, list_product = verify_product(name_p)
+                if stop == 0:
+                    error_message(list_product, name_p)
+                else:
+                    pos = list_product.index(name_p)
+                    list_product.pop(pos)
+                    print("Qual é a nova designaçao?")
+                    upd_product = input()
+                    conf = confirm_menu(upd_product, "produto")
+                    if conf == 0:
+                        sub_op = 0
+                    else:
+                        list_product.insert(pos, upd_product)
+                        clean_trash()
+                        line = ""
+                        for p in list_product:
+                            line += p + ','
+                        write_info_product_update(line[:-1])
+            elif sub_op == 3:   # delete
                 print("Qual é o produto a eliminar?")
                 name_p = input()
-            elif sub_op == 4:
-                l_product = list_products()
-                for i in l_product:
+                stop, list_product = verify_product(name_p)
+                if stop == 0:
+                    error_message(list_product, name_p)
+                else:
+                    pos = list_product.index(name_p)
+                    list_product.pop(pos)
+                    line = ""
+                    for p in list_product:
+                        line += p + ','
+                    write_info_product_update(line[:-1])
+            elif sub_op == 4:   # list
+                for i in list_products():
                     print(i)

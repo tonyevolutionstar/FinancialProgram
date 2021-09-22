@@ -1,1 +1,1 @@
-gasoleo,gasolina,gasoleo verde,tes,post
+gasoleo,gasoleo verde,gasolina s/ch 95,gasolina

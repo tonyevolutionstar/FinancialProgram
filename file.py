@@ -5,4 +5,5 @@ class Database:
         file_name = "dados/" + type_name + "/" + type_name + ".txt"
         file = open(file_name, 'w', encoding='utf8')
         file.write(str(info)+"\n")
+        print("Dados gravados com sucesso")
         file.close()
