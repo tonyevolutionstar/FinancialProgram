@@ -302,6 +302,12 @@ def clean_trash():  # after remove or update one product we got to clean the fil
 
 
 def add_info_buys():
+    available_products = list_products()
+    
+    print("Deseja adicionar \n")
+    print("0 - Automaticamente?\n")
+    print("1 - Manual?\n")
+    type_option = int(input())
     pass
 
 def add_info_sells():

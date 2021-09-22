@@ -1,1 +1,1 @@
-gasoleo,gasoleo verde,gasolina s/ch 95,gasolina
+diesel,gasoleo verde,optima diesel,gasolina s/ch 95,gasolina s/ch 98
