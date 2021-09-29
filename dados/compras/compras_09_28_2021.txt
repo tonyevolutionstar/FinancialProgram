@@ -1,0 +1,6 @@
+gasoleo verde,40,1.4,56.00
+diesel,60,1.45,87.00
+gasolina s/ch 95,60,1.65,99.00
+gasolina s/ch 95,58,1.54,89.32
+diesel,60,1.476,88.56
+diesel,98,1.4,137.20

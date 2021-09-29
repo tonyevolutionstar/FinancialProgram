@@ -2,11 +2,8 @@ __author__ = "Antonio Ramos"
 
 import sys
 import os
+import datetime
 
-
-# from fatura import Fatura  # id, desc, date, forn, iva, qtd, precolitro
-# from buy import Buy  # qtd, date
-# from sell import Sell  # qtd, date
 from client import Client  # name, nif, email, phone
 from provider import Provider  # name, nif, email, phone
 from file import Database  # type, info
@@ -161,8 +158,8 @@ def update_info_client():
             print("Info " + info_client)
             print("Para que nome deseja atualizar?\n")
             new_nome = input()
-            for i in range(1, len(i_client)):
-                previous_inf += i_client[i] + ","
+            for c_i in range(1, len(i_client)):
+                previous_inf += i_client[c_i] + ","
 
             new_info_client = new_nome + "," + previous_inf[:-1]
             option = confirm_menu(new_info_client, "nome")
@@ -222,8 +219,8 @@ def list_info_client():
     with open(path_clientes, 'r') as file_object:
         lines = file_object.readlines()
 
-    for line in lines:
-        print(line.strip())
+    for line_c in lines:
+        print(line_c.strip())
 
 
 def add_info_fornecedor():
@@ -246,13 +243,12 @@ def list_info_fornecedor():
         print(f.read())
         f.close()
 
-
 def list_products():
     products_list = []
     f = open(path_products, 'r')
-    line = f.read().split(",")
-    for p in line:
-        products_list.append(p)
+    line_p = f.read().split(",")
+    for p_list in line_p:
+        products_list.append(p_list)
     f.close()
 
     return products_list
@@ -260,8 +256,8 @@ def list_products():
 def error_message(products_list, name_p):
     print('O nome ' + name_p + ' nao esta na base de dados\n')
     print('Disponíveis: ')
-    for p in range(len(products_list)):
-        if products_list[p] is not None:
+    for error_p in range(len(products_list)):
+        if products_list[error_p] is not None:
             print(products_list[p])
 
 
@@ -300,15 +296,68 @@ def clean_trash():  # after remove or update one product we got to clean the fil
     f.write("")
     f.close()
 
+def verify_file_buy(path_file):
+    list_buy = []
+
+    if not os.path.isfile(path_file):
+        return list_buy
+    else:
+        f = open(path_file, 'r')
+        line_b = f.read()
+        for b_list in line_b:
+            list_buy.append(b_list)
+        f.close()
+    return list_buy
+
+def automatic_option():
+    today_date = datetime.datetime.now().strftime('%m_%d_%Y')
+    path_buyers_automatic = path_buyers + "compras_" + today_date + ".txt"
+
+    list_previous_buys = verify_file_buy(path_buyers_automatic)
+
+    print("Qual é o produto a adicionar?\n")
+    products_list = list_products()
+    for product in products_list:
+        print(str(products_list.index(product)) + " - " + product)
+    print("-------- Adicionar Opcao ------------\n")
+    op_product = int(input())
+    product_choose = products_list[op_product]
+    print("Qual o numero de litros ? ")
+    qtd = int(input())
+    print("Qual é o preço/litro ? ")
+    price_liter = float(input())
+    price = round(qtd * price_liter, 2)
+
+    print("Deseja adicionar mais à base de dados?(1-Sim, 0-Nao) ")
+    list_buys.append(product_choose + "," + str(qtd) + "," + str(price_liter) + "," + str(price) + "\n")
+
+    op_ = int(input())
+    if op_ == 1:
+        automatic_option()
+    else:
+        f = open(path_buyers_automatic, 'w')
+        for x in list_previous_buys:
+            f.write(x)
+
+        for y in list_buys:
+            f.write(y)
+
+        f.close()
 
 def add_info_buys():
     available_products = list_products()
-    
+    print("--------------------------------------")
     print("Deseja adicionar \n")
-    print("0 - Automaticamente?\n")
-    print("1 - Manual?\n")
+    print("0 - Automaticamente?")
+    print("1 - Manual?")
+    print("-------- Adicionar Opcao ------------\n")
     type_option = int(input())
-    pass
+    if type_option == 0:
+        automatic_option()
+
+
+
+
 
 def add_info_sells():
     pass
