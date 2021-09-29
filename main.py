@@ -309,11 +309,8 @@ def verify_file_buy(path_file):
         f.close()
     return list_buy
 
-def automatic_option():
-    today_date = datetime.datetime.now().strftime('%m_%d_%Y')
-    path_buyers_automatic = path_buyers + "compras_" + today_date + ".txt"
-
-    list_previous_buys = verify_file_buy(path_buyers_automatic)
+def add_info_buy(path):
+    list_previous_buys = verify_file_buy(path)
 
     print("Qual é o produto a adicionar?\n")
     products_list = list_products()
@@ -333,9 +330,9 @@ def automatic_option():
 
     op_ = int(input())
     if op_ == 1:
-        automatic_option()
+        add_info_buy(path)
     else:
-        f = open(path_buyers_automatic, 'w')
+        f = open(path, 'w')
         for x in list_previous_buys:
             f.write(x)
 
@@ -344,8 +341,29 @@ def automatic_option():
 
         f.close()
 
+
+def automatic_option():
+    today_date = datetime.datetime.now().strftime('%m_%d_%Y')
+    path_buyers_automatic = path_buyers + "compras_" + today_date + ".txt"
+    add_info_buy(path_buyers_automatic)
+
+
+def manual_option():
+    print("Qual é a data a utilizar?(DD/MM/YYYY)")
+    date_string = input()
+    format_ = "%d/%m/%Y"
+    try:
+        datetime.datetime.strptime(date_string, format_)
+        new_format_date = date_string.split("/")
+        new_date = new_format_date[1] + "_" + new_format_date[0] + "_" + new_format_date[2]
+        path_buyers_manual = path_buyers + "compras_" + new_date + ".txt"
+        add_info_buy(path_buyers_manual)
+    except ValueError:
+        print("O formato da data está mal, devia ser DD/MM/YYYY")
+        manual_option()
+
+
 def add_info_buys():
-    available_products = list_products()
     print("--------------------------------------")
     print("Deseja adicionar \n")
     print("0 - Automaticamente?")
@@ -354,10 +372,8 @@ def add_info_buys():
     type_option = int(input())
     if type_option == 0:
         automatic_option()
-
-
-
-
+    elif type_option == 1:
+        manual_option()
 
 def add_info_sells():
     pass
